@@ -1,0 +1,27 @@
+table{
+    font: 85%/1 arial, sans-serif;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #cbcbcb;
+}
+
+td, th {
+    border-left: 1px solid #cbcbcb;/*  inner column border */
+    border-width: 0 0 0 1px;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible; /*to make ths where the title is really long work*/
+    padding: 0.5em 1em; /* cell padding */
+    border-bottom: 1px solid #cbcbcb;
+}
+
+thead {
+    background-color: #e0e0e0;
+    text-align: left;
+    vertical-align: bottom;
+}
+
+code {
+    font-size: 0.8em;
+}

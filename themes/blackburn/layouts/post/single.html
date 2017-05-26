@@ -1,0 +1,29 @@
+{{ partial "header.html" . }}
+
+<div class="header">
+  <h1>{{ .Title }}</h1>
+  <h2>{{ .Description }}</h2>
+</div>
+
+
+<div class="content">
+
+  {{ partial "post_meta.html" . }}
+
+    {{ if .Params.toc }}
+    <div id="TableOfContents" class="toc col-lg-offset-6">
+      <h2>Table of Contents</h2>
+      {{ .TableOfContents }}
+    </div>
+    <hr>
+    {{ end }}
+
+  {{ .Content }}
+
+  {{ partial "prev_next_post.html" . }}
+
+  {{ partial "disqus.html" . }}
+
+</div>
+
+{{ partial "footer.html" . }}

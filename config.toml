@@ -1,0 +1,61 @@
+languageCode = "en-us"
+theme = "blackburn"
+baseurl = "https://tzyluen.github.io/"
+title = "Technical Notes"
+author = "moo"
+# Shown in the side menu
+copyright = "&copy; 2015. All rights reserved."
+canonifyurls = true
+paginate = 10
+toc = true
+googleAnalytics = "UA-99983797-1"
+
+[indexes]
+  tag = "tags"
+  topic = "topics"
+
+[params]
+  # Shown in the home page
+  #subtitle = "Pen-Notes"
+  brand = "Notes"
+  #googleAnalytics = "Your Google Analytics tracking ID"
+  #disqus = "Your Disqus shortname"
+  # CSS name for highlight.js
+  highlightjs = "androidstudio"
+  dateFormat = "02 Jan 2006"
+  # Include any custom CSS and/or JS files
+  # (relative to /static folder)
+  custom_css = ["css/my.css"]
+  #custom_js = ["js/my.js"]
+
+[menu]
+  # Shown in the side menu.
+  [[menu.main]]
+    name = "Home"
+    pre = "<i class='fa fa-home fa-fw'></i>"
+    weight = 0
+    identifier = "home"
+    url = "/"
+  [[menu.main]]
+    name = "Posts"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "post"
+    url = "/post/"
+  [[menu.main]]
+    name = "Tags"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 1
+    identifier = "tag"
+    url = "/tags/"
+#  [[menu.main]]
+#    name = "About"
+#    pre = "<i class='fa fa-user fa-fw'></i>"
+#    weight = 2
+#    identifier = "about"
+#    url = "/about/"
+#  [[menu.main]]
+#    name = "Contact"
+#    pre = "<i class='fa fa-phone fa-fw'></i>"
+#    weight = 3
+#    url = "/contact/"
