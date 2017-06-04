@@ -1,6 +1,6 @@
 +++
 date = "2017-03-31T00:00:00+08:00"
-title = "Scan a network for vulnerability with Nessus"
+title = "Scan a network for vulnerabilities with Nessus"
 draft = false
 description = ""
 topics = []
@@ -14,34 +14,36 @@ toc = true
 
 Target: 192.168.1.0/24
 
-Nessus provides a set of ready-to-use templates. For general scans, the (1) Advanced Scan and (2) Basic Network Scan would work.
+Nessus provides a set of ready-to-use templates. For general scans, the **(1) Advanced Scan** and **(2) Basic Network Scan would work**. The differences are the Advanced Scan supports the *Compliance* and *Plugins* which can be used to fine-tune the compliance checks (credentials are required) and Plugins.
 
 
 ![scan-a-network-for-vulnerability-with-nessus-01](/img/scan-a-network-for-vulnerability-with-nessus-01.png)
 
 ## Advanced Scans
 
-1. Navigates to `Scans` &rarr; `New Scan` &rarr; `Advanced Scan`, insert the `name`, `description`, and `targets`.
+1. Navigates to `Scans` &rarr; `New Scan` &rarr; `Advanced Scan`, insert the `name`, `description`, and `targets`. The `Schedule` and `Notifications` options enable the scan to be performed at certain time and email the results to a list of recipients automatically.
 
     ![scan-a-network-for-vulnerability-with-nessus-02](/img/scan-a-network-for-vulnerability-with-nessus-02.png)
 
-2. Configure the rest of the settings:
+2. Tune the rest of the settings:
 
     ![scan-a-network-for-vulnerability-with-nessus-03](/img/scan-a-network-for-vulnerability-with-nessus-03.png)
 
-3. Once all is set, save and simply launch the scan.
+3. Once all is set, save. The scan job will be listed in `My Scans` folder.
 
-## Basic network scans
+## Basic Network Scans
 
 1. Navigates to `Scans` &rarr; `New Scan` &rarr; `Basic Network Scan`, insert the `name`, `description` and `targets`, then save.
 
     ![scan-a-network-for-vulnerability-with-nessus-04](/img/scan-a-network-for-vulnerability-with-nessus-04.png)
 
-2. From the `My Scans` folder, select a task from the list to launch the scan.
+## Launch A Scan
+
+1. From the `My Scans` folder, select a task from the list to launch the scan.
 
     ![scan-a-network-for-vulnerability-with-nessus-05](/img/scan-a-network-for-vulnerability-with-nessus-05.png)
 
-3. Once the scan complete, the status bar will changed to checked.
+2. Once the scan complete, the status bar will changed to checked.
 
     ![scan-a-network-for-vulnerability-with-nessus-06](/img/scan-a-network-for-vulnerability-with-nessus-06.png)
 

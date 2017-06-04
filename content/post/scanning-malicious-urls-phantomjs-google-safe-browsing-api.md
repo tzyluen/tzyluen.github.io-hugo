@@ -1,7 +1,7 @@
 +++
 title = "Scanning malicious urls (PhantomJS + Google Safe Browsing API)"
 topics = []
-tags = ["web", "js", "infosec", "malware", "google", "api", "scanning"]
+tags = ["web", "js", "infosec", "malware", "google", "api", "scanning", "automation"]
 draft = false
 description = ""
 date = "2015-11-11T00:00:00+08:00"
