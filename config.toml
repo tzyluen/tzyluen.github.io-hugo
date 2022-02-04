@@ -3,11 +3,9 @@ theme = "blackburn"
 baseurl = "https://tzyluen.github.io/"
 title = "Technical Notes"
 author = "moo"
-# Shown in the side menu
-copyright = "&copy; 2015. All rights reserved."
+copyright = "&copy; 2015 - 2022. All rights reserved."
 canonifyurls = true
 paginate = 10
-toc = true
 googleAnalytics = "UA-99983797-1"
 
 [indexes]
@@ -16,46 +14,48 @@ googleAnalytics = "UA-99983797-1"
 
 [params]
   # Shown in the home page
-  #subtitle = "Pen-Notes"
-  brand = "Notes"
-  #googleAnalytics = "Your Google Analytics tracking ID"
-  #disqus = "Your Disqus shortname"
+  subtitle = "Everything about Computer Science"
+  brand = "NOTES"
+  # googleAnalytics = "Your Google Analytics tracking ID"
+  # disqus = "Your Disqus shortname"
   # CSS name for highlight.js
   highlightjs = "androidstudio"
   dateFormat = "02 Jan 2006"
   # Include any custom CSS and/or JS files
   # (relative to /static folder)
   custom_css = ["css/my.css"]
-  #custom_js = ["js/my.js"]
+  # custom_js = ["js/my.js"]
+  toc = true
 
 [menu]
   # Shown in the side menu.
   [[menu.main]]
     name = "Home"
     pre = "<i class='fa fa-home fa-fw'></i>"
-    weight = 0
+    weight = 1
     identifier = "home"
     url = "/"
   [[menu.main]]
     name = "Posts"
     pre = "<i class='fa fa-list fa-fw'></i>"
-    weight = 1
+    weight = 2
     identifier = "post"
     url = "/post/"
   [[menu.main]]
     name = "Tags"
     pre = "<i class='fa fa-list fa-fw'></i>"
-    weight = 1
+    weight = 3
     identifier = "tag"
     url = "/tags/"
-#  [[menu.main]]
-#    name = "About"
-#    pre = "<i class='fa fa-user fa-fw'></i>"
-#    weight = 2
-#    identifier = "about"
-#    url = "/about/"
-#  [[menu.main]]
-#    name = "Contact"
-#    pre = "<i class='fa fa-phone fa-fw'></i>"
-#    weight = 3
-#    url = "/contact/"
+  [[menu.main]]
+    name = "Links"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 4
+    url = "/links/"
+
+[markup]
+  defaultMarkdownHandler = 'goldmark'
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 2
