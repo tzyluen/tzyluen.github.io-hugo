@@ -9,39 +9,42 @@ toc = true
 
 +++
 
-Base system used to perform the scans:
-```bash
+{{< toc >}}
+
+
+---
+The base system used to perform the scans:
+```
 root@192.168.1.11:~# uname -a
 Linux kali 4.9.0-kali3-amd64 #1 SMP Debian 4.9.13-1kali2 (2017-03-07) x86_64 GNU/Linux
 ```
 
+## Scan large IP block
 
-# Scan large IP block
+Scan the entire `175.0.0.0/8` for `port 22, 80, 445`:
 
-**Scan the entire 175.0.0.0/8 for port 22, 80, 445**:
+{{< fluid_img "/img/scan-the-internet-with-masscan-00.png" >}}
 
-![scan-the-internet-with-masscan-00](/img/scan-the-internet-with-masscan-00.png)
+Note: It's risky to perform such as scan as it may trigger some IDS/IPS and get your IP blocked/blacklisted from accessing them permanently.
 
-**Note:** It's risky to perform such as scan as it may trigger some IDS/IPS and get your IP blocked/blacklisted from accessing them permanently.
-
-
-**Scan a Yahoo IP block for port tcp/80:**
+Scan a Yahoo IP block for port tcp/80:
 
 1. Trace the Yahoo's IP block:
 
-    ```bash
+    ```
     root@192.168.1.11:~# mtr -y1 yahoo.com
     ```
 
-    ![scan-the-internet-with-masscan-01](/img/scan-the-internet-with-masscan-01.png)
+    {{< fluid_img "/img/scan-the-internet-with-masscan-01.png" >}}
 
 2. Scan the entire IP block (32768 of hosts):
 
-    ![scan-the-internet-with-masscan-02](/img/scan-the-internet-with-masscan-02.png)
+    {{< fluid_img "/img/scan-the-internet-with-masscan-02.png" >}}
+
 
 
 ---
-# Exclude IP blocks of sensitive part of the Internet:
+## Exclude IP blocks of sensitive part of the Internet
 
 1. Ensure the `excludefile` is defined in `/etc/masscan/masscan.conf`:
 
@@ -51,17 +54,18 @@ Linux kali 4.9.0-kali3-amd64 #1 SMP Debian 4.9.13-1kali2 (2017-03-07) x86_64 GNU
 
 2. Append the following into the exclude list to prevent scanning them by accident:
 
-    ![scan-the-internet-with-masscan-03](/img/scan-the-internet-with-masscan-03.png)
+    {{< fluid_img "/img/scan-the-internet-with-masscan-03.png" >}}
 
 3. Or, for a non-persistent exclude list, use `--excludefile` option: 
 
-    ```bash
+    ```
     masscan 175.0.0.0/8 -p80 --rate 10000 --excludefile exclude.txt
     ```
 
 
+
 ---
-# Include IP blocks for targeted IP blocks:
+## Include IP blocks for targeted IP blocks
 
 1. Similar to `excludefile`, the file format for the include list:
 
@@ -79,37 +83,34 @@ Linux kali 4.9.0-kali3-amd64 #1 SMP Debian 4.9.13-1kali2 (2017-03-07) x86_64 GNU
 
 2. Scan with the include file option:
 
-    ```bash
+    ```
     masscan -p80 --includefile include.txt
     ```
 
 
 
 ---
-# Transmission Rates
+## Transmission Rates
 
-Depends on network infrastructure and NIC, it can be scaled up to 25 million packets/second.
+Depends on the point A-to-B network infrastructure and NIC, it can be scaled up to 25 million packets/second.
 
 1. The default transmit rate is 100 packets/second. Takes approx. 6 minutes to scan 32768 hosts on port tcp/80:
 
-    ```bash
+    ```
     masscan 98.139.128.0/17 -p80 --rate 100
     ```
 
-    ![scan-the-internet-with-masscan-04](/img/scan-the-internet-with-masscan-04.png)
-
-
+    {{< fluid_img "/img/scan-the-internet-with-masscan-04.png" >}}
 
 2. With 10,000 packets/second takes approx. 8 seconds to scan 32768 hosts on port tcp/80:
 
-    ```bash
+    ```
     masscan 98.139.128.0/17 -p80 --rate 10000
     ```
 
-    ![scan-the-internet-with-masscan-05](/img/scan-the-internet-with-masscan-05.png)
+    {{< fluid_img "/img/scan-the-internet-with-masscan-05.png" >}}
 
-
-**Note:** Known max. transmission rates are:
+Note: the known max. transmission rates are:
 
 1. Windows - 250,000 packets/second
 2. Linux - 2,500,000 packets/second
@@ -118,36 +119,37 @@ Depends on network infrastructure and NIC, it can be scaled up to 25 million pac
 
 
 ---
-# Specify ports and ranges
+## Specify ports and ranges
 
-```bash
+```
 masscan 175.145.0.0/16 -p22,80,445 --rate 1000
 ```
 
-![scan-the-internet-with-masscan-06](/img/scan-the-internet-with-masscan-06.png)
+{{< fluid_img "/img/scan-the-internet-with-masscan-06.png" >}}
 
 
 
 ---
-# Banners
+## Pull the services and banners
 
 1. Grab the banners, i.e., HTTP server version, title, and etc.
 
-    ```bash
+    ```
     masscan 175.145.0.0/16 -p22,80,445 --rate 10000 --banners
     ```
 
 2. Some interesting information:
 
-    ![scan-the-internet-with-masscan-08](/img/scan-the-internet-with-masscan-08.png)
+    {{< fluid_img "/img/scan-the-internet-with-masscan-08.png" >}}
+
 
 
 ---
-# Output formats
+## Output formats
 
 1. Sets the output format to binary `-oB` and saves the output in the given filename, which can be read with `--readscan`, and optionally output into a new format later:
 
-    ```bash
+    ```
     -oB: binary
     -oL: list
     -oG: grepable
@@ -156,28 +158,29 @@ masscan 175.145.0.0/16 -p22,80,445 --rate 1000
     masscan 175.145.0.0/16 -p22,80,445 --banners --rate 10000 -oB 175-145-0-0-masscan.bin
     ```
 
-    ![scan-the-internet-with-masscan-07](/img/scan-the-internet-with-masscan-07.png)
-
+    {{< fluid_img "/img/scan-the-internet-with-masscan-07.png" >}}
 
 2. Read the saved binary file into new `xml` format file that can be used for parsing and reporting:
 
-    ```bash
+    ```
     masscan 175.145.0.0/16 --readscan 175-145-0-0-masscan.bin -oX 175-145-0-0-masscan.xml
     ```
 
----
-# Save &amp; manage the conf for different scanning strategies &amp; objectives
 
-Save the configuration into a file. Multiple conf files for different objectives and strategies. For example, a configuration file for a particular ip block, i.e.,
+
+---
+## Manage config for different scanning strategies
+
+Save the configuration into a file, multiple conf files for different objectives and strategies. For example, a configuration file for a particular ip block, i.e.,
 
 1. Save the current settings into a conf file (`--echo` and redirect to `175-145-0-0.conf`):
 
-    ```bash
+    ```
     masscan 175.145.0.0/16 -p22,80,445 --banners --rate 10000 --echo > 175-145-0-0.conf
     ```
 
 2. Use the saved profile for the same objective:
 
-    ```bash
+    ```
     masscan -c 175-145-0-0.conf
     ```

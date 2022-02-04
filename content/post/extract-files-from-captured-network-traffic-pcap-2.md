@@ -9,40 +9,46 @@ toc = true
 
 +++
 
+{{< toc >}}
 
-# Tcpxtract
+---
+## Tcpxtract
+
 * Supports 26 file formats, extensible (`/etc/tcpxtract.conf`), however it requires the clear start and end markers.
 * Supports only TCP packets, no UDP.
 
-Live capture from an interface and extract:
-```bash
-$ mkdir -p /tmp/enp0s3-tcpxtract-output
-$ sudo tcpxtract -d enp0s3 -o /tmp/enp0s3-tcpxtract-output
-```
+1. Live capture from an interface and extract:
 
-Extract from pcap file:
+    ```
+    $ mkdir -p /tmp/enp0s3-tcpxtract-output
+    $ sudo tcpxtract -d enp0s3 -o /tmp/enp0s3-tcpxtract-output
+    ```
 
-![extracting-files-tcpxtract-01](/img/extracting-files-tcpxtract-01.png)
+2. Extract from the pcap file:
+
+    {{< fluid_img "/img/extracting-files-tcpxtract-01.png" >}}
+
 
 ---
-# Tcpextract
-* Similar to both `tcpflow` and `tcpxtract`, it extracts all files it recognized from a pcap file or interface.
-* Extracts files with their original names, instead of the index names i.e., 0000001.htm.
+## Tcpextract
 
-```bash
-$ sudo apt-get install python-nids
-$ git clone https://github.com/faust/tcpextract.git
-$ cd tcpextract/
-$ sudo python setup.py install
-```
+* Similar to both `tcpflow` and `tcpxtract`, `tcpextract` extracts all files it recognized from a pcap file or interface.
+* It also extracts files with their original names, instead of the index names i.e., 0000001.htm.
 
-However, it is not well supported, or unstable.  It failed to extract http traffic during the experiment:
+    ```
+    $ sudo apt-get install python-nids
+    $ git clone https://github.com/faust/tcpextract.git
+    $ cd tcpextract/
+    $ sudo python setup.py install
+    ```
 
-![extracting-files-tcpextract-01](/img/extracting-files-tcpextract-01.png)
+1. During the experiment, it failed to extract http traffic, the package is not well supported, and still unstable with error.
 
-So, converts `pcapng` to `pcap` file format:
-```bash
-$ editcap http_espn.pcapng http_espn.pcap
-```
+2. After a few attempts, e.g., attempted to convert between `pcapng` and `pcap` format, it still failed silently with zero file extracted.
 
-After a few attempt, it still failed silently with zero file extracted.
+    {{< fluid_img "/img/extracting-files-tcpextract-01.png" >}}
+
+    ```
+    $ editcap http_espn.pcapng http_espn.pcap
+    ```
+

@@ -1,9 +1,9 @@
 +++
-title = "Scanning malicious urls (PhantomJS + Google Safe Browsing API)"
+title = "Scanning Malicious URLs"
 topics = []
 tags = ["web", "js", "infosec", "malware", "google", "api", "scanning", "automation"]
 draft = false
-description = ""
+description = "with PhantomJS + Google Safe Browsing API"
 date = "2015-11-11T00:00:00+08:00"
 
 +++
@@ -11,7 +11,7 @@ date = "2015-11-11T00:00:00+08:00"
 
 My examples are in JS, on PhantomJS headless browser, it could be easily adapted to other languages. The script traverses a webpage and harvests all the URLs therein to check for malware/malicious sites through the Google Safe Browsing API.
 
-```bash
+```
 192.168.1.9:~$ phantomjs chk-malinks.js http://some.malware.site
 1: hshd.io
 2: sourceforge.net
@@ -39,6 +39,7 @@ gsafe response json:{
   ]
 }
 ```
+
 ---
 ### Google Safe Browsing
 
@@ -58,4 +59,4 @@ The rest of the code are auxiliary functions:
 
 ---
 **References:**
-[1] https://developers.google.com/safe-browsing/v4/get-started
+1. https://developers.google.com/safe-browsing/v4/get-started

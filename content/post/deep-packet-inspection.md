@@ -9,6 +9,13 @@ toc = true
 
 +++
 
+{{< toc >}}
+
+
+
+---
+## Introduction
+
 Port-independent, P2P, and encrypted protocols and packets have made the conventional network traffics analysis that based on packet header (transport protocol and application ports) obsolete. Deep Packet Inspection (DPI) technology can be used to identify and classify these encrypted, port-independent, P2P protocols. 
 
 This post explore the popular open source implementations:
@@ -23,22 +30,25 @@ Other similar open source DPI tools are:
 * PACE (Protocol and Application Classification Engine) [5], commercial.
 * NBAR (Network Based Application Recognition) by Cisco [6], commercial.
 
-**Note:** ndpi-netfilter tested only on Ubuntu 14.04.1 LTS (kernel 3.13.0-37-generic). During the initial experiment of this setup on machine with kernel v4.x, it did not work. The following Debian/wheezy machine with kernel v3.2 were used instead:
+Note: ndpi-netfilter tested only on Ubuntu 14.04.1 LTS (kernel 3.13.0-37-generic). During the initial experiment of this setup on machine with kernel v4.x, it did not work. The following Debian/wheezy machine with kernel v3.2 were used instead:
 
 OS/kernel version:
 
-```bash
+```
 tzy@192.168.1.12:~$ uname -a
 Linux blackstar 3.2.0-4-amd64 #1 SMP Debian 3.2.63-2+deb7u2 x86_64 GNU/Linux
 ```
 
+
+
 ---
-# nDPI
-## Build and install ndpi-netfilter
-1. Download ndpi-netfilter from https://github.com/betolj/ndpi-netfilter and extract to `/usr/src`
+## nDPI
+### Build and install ndpi-netfilter
+
+1. Download `ndpi-netfilter` from https://github.com/betolj/ndpi-netfilter and extract to `/usr/src`.
 2. Install dependencies:
 
-    ```bash
+    ```
     root@192.168.1.12:~# apt-get install linux-source
     root@192.168.1.12:~# apt-get install libtool
     root@192.168.1.12:~# apt-get install autoconf
@@ -47,9 +57,10 @@ Linux blackstar 3.2.0-4-amd64 #1 SMP Debian 3.2.63-2+deb7u2 x86_64 GNU/Linux
     root@192.168.1.12:~# apt-get install libpcap-dev 
     root@192.168.1.12:~# apt-get install iptables-dev 
     ```
+
 3. Build and install nDPI:
-    
-    ```bash
+
+    ```
     root@192.168.1.12:~# cd /usr/src/ndpi-netfilter-master
     root@192.168.1.12:/usr/src/ndpi-netfilter-master# tar xvzf nDPI.tar.gz
     root@192.168.1.12:/usr/src/ndpi-netfilter-master# cd nDPI
@@ -60,7 +71,7 @@ Linux blackstar 3.2.0-4-amd64 #1 SMP Debian 3.2.63-2+deb7u2 x86_64 GNU/Linux
 
 4. Build and install ndpi-netfilter:
 
-    ```bash
+    ```
     root@192.168.1.12:~# cd ..
     root@192.168.1.12:~# NDPI_PATH=/usr/src/ndpi-netfilter-master/nDPI make
     root@192.168.1.12:~# make modules_install
@@ -69,31 +80,31 @@ Linux blackstar 3.2.0-4-amd64 #1 SMP Debian 3.2.63-2+deb7u2 x86_64 GNU/Linux
 
 
 
-
 ---
-# Testing
-
 ## Realtime capture
 
-1. Runs SSH server 192.168.1.12 on port `26/tcp` instead of the default `22/tcp`:
+Use the `ndpiReader` utility to capture and classify network packets in realtime.
 
-    ![ndpi-deep-packet-inspection-02](/img/ndpi-deep-packet-inspection-03.png)
+1. Runs SSH server `192.168.1.12` on port `26/tcp` instead of the default `22/tcp`:
 
-2. From a client host 192.168.1.9, port scans 192.168.1.12, it shows as `26/tcp rsftp` service:
+    {{< fluid_img "/img/ndpi-deep-packet-inspection-03.png" >}}
 
-    ![ndpi-deep-packet-inspection-02](/img/ndpi-deep-packet-inspection-04.png)
+2. From a client host `192.168.1.9`, port scans `192.168.1.12`, it shows as `26/tcp rsftp` service:
 
-3. SSH on non-standard port 26, and non-port based packets e.g., Facebook, Twitter, GMail, Youtube, Google, Apple, Cloudflare and etc were detected.
+    {{< fluid_img "/img/ndpi-deep-packet-inspection-04.png" >}}
 
-    ![ndpi-deep-packet-inspection-02](/img/ndpi-deep-packet-inspection-02.png)
+3. SSH on non-standard port 26, and non-port based packets e.g., Facebook, Twitter, GMail, Youtube, Google, Apple, Cloudflare, etc., were detected.
+
+    {{< fluid_img "/img/ndpi-deep-packet-inspection-02.png" >}}
 
 
 
+---
 ## Iptables/netfilter
 
 To filter port-independent packets, get the list of supported protocols as shown below. Below are some popular protocols supported by ndpi:
 
-```bash
+```
 root@192.168.1.12:~# iptables -m ndpi -h
 ...
 ndpi match options:
@@ -111,24 +122,26 @@ ndpi match options:
 ...
 ```
 
+
 ### SSH
 
 To drop all incoming ssh packets, do:
 
-```bash
+```
 root@192.168.1.12:~# iptables -I INPUT -m ndpi --ssh -j DROP
 
 iptables -A INPUT -m limit --limit 2/min -j LOG --log-prefix "[IPTABLES-INPUT-DROPPED] " --log-level 4
 iptables -A OUTPUT -m limit --limit 2/min -j LOG --log-prefix "[IPTABLES-OUTPUT-DROPPED] " --log-level 4
 ```
 
-**Note:** the last two lines are for logging purposes.
+Note: the last two lines are for logging purposes.
+
 
 ### Youtube
 
 To drop all incoming youtube based packets, do:
 
-```bash
+```
 iptables -A INPUT -m ndpi --youtube -j DROP
 ```
 
@@ -136,19 +149,19 @@ iptables -A INPUT -m ndpi --youtube -j DROP
 
 To drop all incoming and outgoing social networks, do:
 
-```bash
+```
 iptables -A INPUT -m ndpi --twitter -j DROP
 iptables -A OUTPUT -m ndpi --twitter -j DROP
 iptables -A INPUT -m ndpi --facebook -j DROP
 iptables -A OUTPUT -m ndpi --facebook -j DROP
 ```
 
+
 ---
 **References:**
-
-[1] nDPI -  http://www.ntop.org/products/deep-packet-inspection/ndpi/ <br>
-[2] ndpi-netfilter - https://github.com/betolj/ndpi-netfilter/README <br>
-[3] L7-filter - http://l7-filter.clearos.com <br>
-[4] Libprotoident - https://research.wand.net.nz/software/libprotoident.php <br>
-[5] PACE (Protocol and Application Classification Engine) - https://www.ipoque.com/products/dpi-engine-rsrpace-2 <br>
-[6] NBAR (Network Based Application Recognition) - http://www.cisco.com/c/en/us/products/ios-nx-os-software/network-based-application-recognition-nbar/index.html
+1. nDPI - http://www.ntop.org/products/deep-packet-inspection/ndpi/
+2. ndpi-netfilter - https://github.com/betolj/ndpi-netfilter/README
+3. L7-filter - http://l7-filter.clearos.com
+4. Libprotoident - https://research.wand.net.nz/software/libprotoident.php
+5. PACE (Protocol and Application Classification Engine) - https://www.ipoque.com/products/dpi-engine-rsrpace-2
+6. NBAR (Network Based Application Recognition) - http://www.cisco.com/c/en/us/products/ios-nx-os-software/network-based-application-recognition-nbar/index.html

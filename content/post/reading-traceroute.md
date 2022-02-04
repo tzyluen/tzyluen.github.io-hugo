@@ -4,15 +4,15 @@ date = "2016-01-29T00:00:00+08:00"
 title = "Reading Traceroute"
 tags = ["infosec", "networking", "traceroute", "scanning"]
 draft = false
-description = "How to read traceroute report"
+description = "How To A Read Traceroute Report"
 toc = false
 
 +++
 
 This post extends the discussion on traceroute in previous post [Traceroute, Firewalls & Geo-IP]({{< relref "post/traceroute-firewalls-geoip.md#output-format-explanation" >}}), and focused on intepreting the traceroute report.
 
-### Output format explanation:
-```bash
+#### Output format explanation:
+```
            v--- the router/ip-addr traversed by the packet 
 [Hop]     [Hostname/(IP-addr)]      [RTT1]  [RTT2]  [RTT3]
  ^--- transit no. of the route       ^---- round-trip time
@@ -21,7 +21,7 @@ The round-trip time (RTT) is the latency (delay between sending the packet and g
 
 By default, traceroute sends 3 packets per TTL increment. Each column [RTT1]...[RTT3] corresponds to the time it took to get response (round-trip time). 3 different packets give a better sampling of the latency, it also helps for situation where multi-path exist (different link). The unit is in **ms (milliseconds)**. For example,
 
-```bash
+```
 [Hop]   [IP-addr]       [RTT1]      [RTT2]      [RTT3]
   7     204.15.20.45    31.757ms    53.862ms    53.844ms  
 ```
@@ -30,7 +30,7 @@ Discussion with real world examples were covered in [Traceroute, Firewalls & Geo
 
 
 ---
-### Reading the traceroute:
+#### Reading the traceroute:
 
 * **The Hop times:**
     * Consistent times are the main thing to read and evaluate from a traceroute report.
@@ -40,7 +40,7 @@ Discussion with real world examples were covered in [Traceroute, Firewalls & Geo
 * **Increasing latency towards the target:**
     * Sudden increase of response time (including packet loss) in a hop and continuous increasing often indicates issue for the hop (the router), the * also suggests either packet loss or the node simply overloaded:
 
-    ```bash
+    ```
      ...
      2  175.137.109.62 (175.137.109.62)    14.947ms    41.973ms    41.883ms  
      3  175.137.109.69 (175.137.109.69)    14.348ms    43.621ms    43.614ms  
@@ -53,7 +53,7 @@ Discussion with real world examples were covered in [Traceroute, Firewalls & Geo
 * **High latency in the middle that remains consistent:**
     * An jump in latency but remain consistent till the rest does not indicate an issue.
 
-    ```bash
+    ```
      ...
      2  175.137.109.70      15.848ms    15.722ms    36.279ms  
      3  175.137.109.61      13.277ms    36.372ms    36.332ms  
@@ -69,15 +69,13 @@ Discussion with real world examples were covered in [Traceroute, Firewalls & Geo
     * If it's first few hops, it indicates local network/subnet issue.
 
 * **Timeouts at the beginning:**
-    * If the following hops responded without issue, then it's normal. The router may be configured not to respond to traceroute requestssuch as ICMP packets, or short-lived TTL packets.
+    * If the following hops responded without issue, then it's normal. The router may be configured not to respond to traceroute requests such as ICMP packets, or short-lived TTL packets.
 
 * **Timeouts at the very end:**
     * The target may be blocking ICMP requests or packets involving short-lived TTL flags. However, the target is reachable with normal HTTP/HTTPS request.
     * The packet reached the target but unable to response back due to some issues on the destination point of the return path. Should not affect normal connection.
     * Network problem and affecting the connection.
 
-
 ---
-**Reference:**
-
-[1] [How to read a traceroute](https://www.inmotionhosting.com/support/website/how-to/read-traceroute)
+**References:**
+1. [How to read a traceroute](https://www.inmotionhosting.com/support/website/how-to/read-traceroute)

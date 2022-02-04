@@ -8,33 +8,33 @@ draft = false
 
 +++
 
-In the *Nmap Network Scanning* book, chapter 15, section *Port Specification and Scan Order*, quote "By default, Nmap scans the most common 1,000 ports for each protocol." [1]
+In the *{{< glow_text_app_menu "Nmap Network Scanning" >}}* book, {{< glow_text_app_menu "chapter 15" >}}, section *{{< glow_text_app_menu "Port Specification and Scan Order" >}}*, to quote "By default, Nmap scans the most common 1,000 ports for each protocol." [1]
 
 However, the documentation did not mention the list of 1000 ports.
 
-How to identify and show those ports ?
+So, how to identify and show those 1000 ports ?
 
 
-
-```bash
+```
 --top-ports n: the n highest-ratio ports found in nmap-services. n must be 1 or greater
 -v: verbose level, to print the 
 -oG: grepable output
 - : output to stdout
-nmap --top-ports 1000 -v -oG - localhost
+
+$ nmap --top-ports 1000 -v -oG - localhost
 ```
 
 **Note:** refer to `/usr/share/nmap/nmap-services` file for the service name and protocol.
 
 So put all together, and process the output in ascending order:
 
-```bash
+```
 $ nmap --top-ports 1000 localhost -v -oG - | grep 'Ports scanned' | cut -d" " -f4 | tr ',;' '\n' 
 ```
 
-Output:
+The 1000 ports:
 
-```plain
+```
 TCP(1000
 1
 3-4
@@ -650,5 +650,4 @@ TCP(1000
 
 ---
 **References:**
-
-[1] https://nmap.org/book/man-port-specification.html
+1. https://nmap.org/book/man-port-specification.html

@@ -1,5 +1,5 @@
 +++
-title = "Tools for scanning malicious urls and websites"
+title = "Tools for Scanning Malicious URLs and Websites"
 description = ""
 topics = []
 tags = ["infosec", "web", "malware", "virustotal", "scanning", "remnux"]
@@ -9,8 +9,10 @@ toc = true
 
 +++
 
-# Online and Web-based
+{{< toc >}}
 
+---
+## List of online and web-based tools
 * https://www.virustotal.com: by VirusTotal, a subsidiary of Google
 * https://exchange.xforce.ibmcloud.com: by IBM
 * http://safeweb.norton.com: by Norton, Symantec
@@ -20,12 +22,11 @@ toc = true
 * http://isitphishing.org: by https://vadesecure.com
 
 ---
-# Text-mode based Utility
+## Text-mode based Utility
 
+### VirusTotalApi
 
-## VirusTotalApi
-
-```bash
+```
 $ git clone https://github.com/doomedraven/VirusTotalApi.git
 ```
 
@@ -44,13 +45,10 @@ remnux@remnux:~$ vt --url-report malicious-url.com
 ```
 
 Positive result:
-
-![tools-for-scanning-malicious-urls-and-websites-01](/img/tools-for-scanning-malicious-urls-and-websites-01.png)
-
+{{< fluid_img "/img/tools-for-scanning-malicious-urls-and-websites-01.png" >}}
 
 Negative result:
-
-![tools-for-scanning-malicious-urls-and-websites-02](/img/tools-for-scanning-malicious-urls-and-websites-02.png)
+{{< fluid_img "/img/tools-for-scanning-malicious-urls-and-websites-02.png" >}}
 
 
 If the url is not in the database, use the `--url-scan` to submit and scan.
@@ -60,6 +58,5 @@ remnux@remnux:~$ vt --url-scan malicious-url.com
 
 ---
 **References:**
-
-[1] https://www.virustotal.com <br>
-[2] https://remnux.org
+1. https://www.virustotal.com
+2. https://remnux.org

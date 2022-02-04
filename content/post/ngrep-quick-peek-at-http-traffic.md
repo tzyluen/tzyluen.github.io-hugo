@@ -9,21 +9,28 @@ toc = false
 
 +++
 
-### Quick peek:
+{{< toc >}}
+
+---
+## Quick peek
+
 Monitor activities on device `eth0 port 80`:
 
 `-W byline`: linefeeds (LF) are printed as linefeeds, more readable.
 
 `-qt`: quiet mode and print human-readable timestamp.
 
-```bash
+```
 # ngrep -d eth0 -W byline -qt port 80
 ```
 
+
 ---
-### Sorts out unique User-Agent (devices):
+## Sorts out unique User-Agent (devices)
+
 In corporate environment, desktop/laptop OS build is often standardized. However, with the BYOD initiative, the network has becomes even more vulnerable. To quickly identify the type of devices on the network, we could do:
-```bash
+
+```
 $ sudo ngrep -qt -W single -d eth0 -P~ 'User-Agent:' 'port 80' > http-user-agent.txt
 $ sed 's/.*User-Agent/User-Agent/' http-user-agent.txt | sed 's/~.*//' | sed '/^$/d' > user-agents.txt
 $ cat user-agents.txt | sort | uniq -c | sort -rn
@@ -33,41 +40,53 @@ $ cat user-agents.txt | sort | uniq -c | sort -rn
    4 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0
 ```
 
-Or use `tshark` :
-```bash
+Or, use `tshark` :
+
+```
 $ sudo tshark -i eth0 -f "port 80" -Y "http contains \"User-Agent:\"" -Tfields -e http.user_agent > user-agents.txt
 $ cat user-agents.txt | sort | uniq -c | sort -rn
 ```
 
+
 ---
-### Monitor the occurrence of the keywords:
+## Monitor the occurrence of the keywords
 
 Capture network traffic matches tcp port 80 (HTTP) on GET/POST methods:
-```bash
+
+```
 # ngrep -d eth0 -q -i "^GET |^POST " tcp and port 80
 ```
 
 Monitor the occurrence of the words `user` or `pass`, case insensitive:
-```bash
+
+```
 # ngrep -d eth0 -wi 'user | pass' port 80
 ```
 
 Read from a pcap file, search for `GET` and `POST` requests:
-```bash
+
+```
 # ngrep -qt -W byline -I capture.pcap | grep 'GET\|POST'
 ```
 
----
-### IP address:
-Matches all headers containing pattern string 'HTTP' sent to/from ip address starting with 172.16
-```bash
-# ngrep -qt -I capture.pcap 'HTTP' 'host 172.16' | grep 'GET\|POST'
-```
-![ngrep-quick-peek-at-http-traffic-01](/img/ngrep-quick-peek-at-http-traffic-01.png)
 
 ---
-### DNS:
-Capture incoming/outgoing to/from eth0 matches DNS queries/responses
-```bash
+## Monitor HTTP GET | POST traffic by IP addresses
+
+Matches all headers containing pattern string 'HTTP' sent to/from ip address starting with 172.16:
+
+```
+# ngrep -qt -I capture.pcap 'HTTP' 'host 172.16' | grep 'GET\|POST'
+```
+
+{{< fluid_img "/img/ngrep-quick-peek-at-http-traffic-01.png" >}}
+
+
+---
+## DNS
+
+Capture incoming/outgoing to/from eth0 matches DNS queries/responses:
+
+```
 # ngrep -qt -W byline -d eth0 udp and port 53
 ```

@@ -9,102 +9,112 @@ toc = true
 
 +++
 
-# Introduction
-The process is mostly the same in network packets data-carving:
+{{< toc >}}
+
+---
+## Introduction
+The process is mostly the same in network packets data-carving, which comprises of:
 
 * Gain access and collect the raw bytes
 * Strip the protocol information
 * Extract and write the data to file
 
-The difference of these tools are the capability i.e., supported protocols and file formats.
-
-# Wireshark
-**HTTP objects/files:**
-
-Navigate to `File` &rarr; `Export Objects` and select the type, currently it supports four protocols:
-
-![extracting-files-wireshark-export-http-object-list-01](/img/extracting-files-wireshark-export-http-object-list-01.png)
-
-Then select the target filename followed by `Save` or simply `Save All`:
-
-![extracting-files-wireshark-export-http-object-list-02](/img/extracting-files-wireshark-export-http-object-list-02.png)
-
-List of exported objects and the respective file types:
-
-![extracting-files-wireshark-export-http-object-list-03](/img/extracting-files-wireshark-export-http-object-list-03.png)
-
-
-Alternatively, the `Follow` &rarr; `TCP Stream` can also be used to extract raw files from the stream:
-
-![extracting-files-wireshark-follow-tcp-stream-01](/img/extracting-files-wireshark-follow-tcp-stream-01.png)
-![extracting-files-wireshark-follow-tcp-stream-02](/img/extracting-files-wireshark-follow-tcp-stream-02.png)
-
-
-**Binary files:**
-In real world scenario, malware often spread through http protocol, thus we could search the common strings used by malware such as `GetProcAddress`, `ExitProcess` and etc. (statistically reported in paper by Gong et al. [1]).
-
-Use the display filter `http contains "GetProcAddress"`:
-
-![extracting-files-wireshark-binary-files-01](/img/extracting-files-wireshark-binary-files-01.png)
-
-There are multiple ways to export the packets (binary file):
-
-1. Export Objects &rarr; HTTP, and select the file from the list:
-
-    ![extracting-files-wireshark-binary-files-03](/img/extracting-files-wireshark-binary-files-03.png)
-
-2. Export Packet Bytes:
-
-    ![extracting-files-wireshark-binary-files-04](/img/extracting-files-wireshark-binary-files-05.png)
-
-
-Once the binary is obtained, we could use hex editor to view the binary file, and locate the matching strings:
-
-```bash
-$ xxd mal.bin |less
-```
-
-![extracting-files-wireshark-binary-files-02](/img/extracting-files-wireshark-binary-files-02.png)
-
-MD5 checksum:
-
-![extracting-files-wireshark-binary-files-04](/img/extracting-files-wireshark-binary-files-04.png)
+The differences of these tools are their capabilities i.e., the supported protocols and file formats.
 
 
 ---
-# Tcpflow & Foremost
+## Wireshark
+### HTTP objects and files
 
-Assuming the pcap file `192.168.1.0.pcap` contains the packets captured from the `192.168.1.0/24` network, we could use `tcpflow` to export the data streams into individual files by ip-addresses:
+To extracts the HTTP objects and files with Wireshark,
 
-![extracting-files-wireshark-foremost-01](/img/extracting-files-wireshark-foremost-01.png)
+1. Navigate to 'File' &rarr; 'Export Objects' and select the type, currently it supports four protocols:
+
+    {{< fluid_img "/img/extracting-files-wireshark-export-http-object-list-01.png" >}}
+
+2. Then select the target filename followed by 'Save' or simply 'Save All':
+
+    {{< fluid_img "/img/extracting-files-wireshark-export-http-object-list-02.png" >}}
+
+3. Once extracted, the list of exported objects and the respective file types can be seen:
+
+    {{< fluid_img "/img/extracting-files-wireshark-export-http-object-list-03.png" >}}
+
+4. Alternatively, the 'Follow' &rarr; 'TCP Stream' can also be used to extract raw files from the stream:
+
+    {{< fluid_imgs
+        "|/img/extracting-files-wireshark-follow-tcp-stream-01.png|"
+        "|/img/extracting-files-wireshark-follow-tcp-stream-02.png|"
+    >}}
 
 
-`Tcpflow` only handles the direction of the data streams, and if the target binary files were not split into individual files by `tcpflow`, we could use foremost to complement the processes:
+---
+### Binary files
 
-**Note:** add the following line to `/etc/foremost.conf` to add Mach-O binary file format's signature.
-```bash
-bin    n    4096000    \xCF\xFA\xED\xFE\x07\x00
+In real world scenario, malware often spread through http protocol, thus we could search the common strings used by malware such as `GetProcAddress`, `ExitProcess` and etc. (statistically reported in paper by Gong et al. [1]).
+
+1. To get to that for extraction purposes, use the display filter ' `http contains "GetProcAddress"` ' :
+
+    {{< fluid_img "/img/extracting-files-wireshark-binary-files-01.png" >}}
+
+2. There are multiple ways to export the packets (binary file):
+    1. 'Export Objects' &rarr; 'HTTP', and select the file from the list:
+
+        {{< fluid_img "/img/extracting-files-wireshark-binary-files-03.png" >}}
+
+    2. Or, right-click and 'Export Packet Bytes':
+
+        {{< fluid_img "/img/extracting-files-wireshark-binary-files-05.png" >}}
+
+3. Once the binary is obtained, we could use hex editor to view the binary file, and locate the matching strings:
+
+    ```
+    $ xxd mal.bin |less
+    ```
+
+    {{< fluid_img "/img/extracting-files-wireshark-binary-files-02.png" >}}
+
+4. And start attribution and digital signature with fingerprinting the binary with MD5 checksum, etc. :
+
+    {{< fluid_img "/img/extracting-files-wireshark-binary-files-04.png" >}}
+
+
+---
+## Tcpflow & Foremost
+
+Assuming the pcap file `192.168.1.0.pcap` contains the packets captured from the `192.168.1.0/24` network, we could use `tcpflow` to extract the data streams into individual files by ip-addresses:
+
+{{< fluid_img "/img/extracting-files-wireshark-foremost-01.png" >}}
+
+1. `Tcpflow` only handles the direction of the data streams, and if the target binary files were not split into individual files by `tcpflow`, we could use `foremost` utility to complement the processes:
+
+    Note: add the following line to `/etc/foremost.conf` to add Mach-O binary file format's signature.
+    ```
+    bin    n    4096000    \xCF\xFA\xED\xFE\x07\x00
+    ```
+
+    where,
+    ```
+    [filetype]  [case-sensitivity]  [upper-limit-for-size]  [signature header]  [footer]
+    ```
+
+2. Concatenate the data files generated by `tcpflow` into a single file:
+
+    {{< fluid_img "/img/extracting-files-wireshark-foremost-02.png" >}}
+
+3. Parse the file with `foremost`, followed by validation with md5sum which yielded identical result to previous digital signature fingerprint of `mal.bin` file extracted with `wireshark` in above section from host `192.168.1.7` :
+
+    {{< fluid_img "/img/extracting-files-wireshark-foremost-03.png" >}}
+
+Note: `tcpflow` only support TCP packets, it does not handle UDP packets. To separate the packets not processed by `tcpflow`, use the `-w` option:
+
 ```
-where,
-```bash
-[filetype]  [case-sensitivity]  [upper-limit-for-size]  [signature header]  [footer]
-```
-
-Concatenate the data files generated by tcpflow into a single file:
-
-![extracting-files-wireshark-foremost-02](/img/extracting-files-wireshark-foremost-02.png)
-
-Parse the file with `Foremost`, followed by validation with md5sum which yielded identical result to previous value of `mal.bin` file shown above in `192.168.1.7`:
-![extracting-files-wireshark-foremost-03](/img/extracting-files-wireshark-foremost-03.png)
-
-**Note:** `tcpflow` only support TCP packets, it doesn not handle UDP packets. To separate the packets not processed by `tcpflow`, use the `-w` option:
-```bash
  -w filename.pcap
     Write packets that were not processed to filename.pcap. Typically this will be UDP packets.
 ```
 
+
 ---
 **References:**
-
-[1] Gong, M., Girkar, U., & Xie, B. Classifying Windows Malware with Static Analysis. <br>
-[2] https://www.sans.org/reading-room/whitepapers/forensics/extracting-files-network-packet-captures-36562 <br>
+1. Gong, M., Girkar, U., & Xie, B. Classifying Windows Malware with Static Analysis.
+2. https://www.sans.org/reading-room/whitepapers/forensics/extracting-files-network-packet-captures-36562

@@ -9,54 +9,57 @@ toc = true
 
 +++
 
-# Nmap Ndiff
+{{< toc >}}
 
-Ndiff is a tool to aid in the comparison of Nmap scans. Ndiff, like the standard diff utility, compares two scans at a time. It takes two Nmap XML output files and prints the differences between them. The differences observed are:
+
+---
+## Nmap Ndiff
+
+`Ndiff` is a tool to aid in the comparison of `Nmap` scans. Ndiff, like the standard diff utility, compares two scans at a time. It takes two Nmap XML output files and prints the differences between them. The differences observed are:
 
 1. Host states (e.g. up to down)
-
 2. Port states (e.g. open to closed)
-
 3. Service versions (from -sV)
-
 4. OS matches (from -O)
-
 5. Script output
 
 
 
-## Scan and interpret the results/diffs
+### Scan and interpret the results/diffs
 
-Do a fast scan `-F`, and output result in XML format:
+1. Do a fast scan `-F`, and output result in XML format:
 
-```bash
-nmap -F -sS -sV -oX 192-168-1-10-$(date +%F-%R) 192.168.1.10 
-```
+    ```
+    # nmap -F -sS -sV -oX 192-168-1-10-$(date +%F-%R) 192.168.1.10 
+    ```
 
-Do a full TCP port scan, service/version detection and output result in XML format:
+2. Do a full TCP port scan, service/version detection and output result in XML format:
 
-```bash
-nmap -p 1-65535 -sS -sV -oX 192-168-1-10-$(date +%F-%R) 192.168.1.10 
-```
+    ```
+    # nmap -p 1-65535 -sS -sV -oX 192-168-1-10-$(date +%F-%R) 192.168.1.10 
+    ```
 
-Compare the two results with `ndiff`:
+3. Compare the two results with `ndiff`:
 
-```bash
--v, --verbose
-   Include all hosts and ports in the output, not only those that have changed.
-ndiff -v file1 file2
-```
+    ```
+    -v, --verbose
+       Include all hosts and ports in the output, not only those that have changed.
+    
+    $ ndiff -v file1 file2
+    ```
 
-The full TCP port scan (`-p 1-65535`) exposed 3 additional ports:
+4. The full TCP port scan (`-p 1-65535`) exposed 3 additional ports:
 
-![scanning-a-network-on-a-schedule-with-nmap-ndiff-01](/img/scanning-a-network-on-a-schedule-with-nmap-ndiff-01.png)
+    {{< fluid_img "/img/scanning-a-network-on-a-schedule-with-nmap-ndiff-01.png" >}}
 
 
+
+---
 ## Automation
 
 Put the regular `nmap` scan into a script and `ndiff` its XML format results, and `mailto` the target recipient(s):
 
-**Script:** `001-LAN-192-168-1-daily.sh`
+sh script: `001-LAN-192-168-1-daily.sh`
 
 ```bash
 #!/bin/sh
@@ -77,9 +80,9 @@ cat $BASENAME-$date.nmap
 ln -sf $BASENAME-$date.xml $BASENAME-prev.xml
 ```
 
-**Note:** weekly scan can be extended to full TCP scan such as: `-v -p 1-65535 -T4 -sV`
+Note: weekly scan can be extended to full TCP scan such as: `-v -p 1-65535 -T4 -sV`
 
-**Crontab:**
+{{< glow_text_app_menu "Crontab:" >}}
 
 ```
 MAILTO=tzy

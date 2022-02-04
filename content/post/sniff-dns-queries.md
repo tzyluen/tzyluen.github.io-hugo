@@ -1,7 +1,7 @@
 +++
 draft = false
 date = "2016-02-20T00:00:00+08:00"
-title = "Sniff DNS queries"
+title = "Sniff DNS Queries"
 description = "dnstop / tcpdump / wireshark"
 topics = []
 tags = ["infosec", "networking", "dns", "tcpdump", "wireshark", "tshark", "packet-analysis", "sniffing"]
@@ -9,7 +9,10 @@ toc = true
 
 +++
 
-# Dnstop
+{{< toc >}}
+
+---
+## Dnstop
 is a console libpcap application that displays various tables of DNS traffic on a network including:
 
 * Source IP addresses
@@ -18,19 +21,25 @@ is a console libpcap application that displays various tables of DNS traffic on 
 * Top level domains
 * Second level domains
 
-```bash
+```
 # dnstop enp0s3 -l 3
 ```
-![dnstop-monitoring-01](/img/dnstop-monitoring-large-count-01.png)
+
+{{< fluid_img "/img/dnstop-monitoring-large-count-01.png" >}}
 
 Use `ctrl-r` to reset the counter/refresh the history to get the latest queries.
 
 
----
-# Tcpdump
+{{< rawhtml >}}
+<br/><br/>
+{{< /rawhtml >}}
 
-Capture packets on port 53 (DNS):
-```bash
+
+---
+## Tcpdump
+
+Capture packets from port 53 (DNS):
+```
 -i: interface
 -v: verbose
 -s: snaplen, snap n bytes length from each packet (default 262144).
@@ -44,7 +53,7 @@ Got 223
 ```
 
 Read from captured raw pcap file:
-```bash
+```
 -q: quick/quiet/shorter output. Less protocol information.
 -A: print the payload in ASCII.
 -X: print the payload in hex and ASCII.
@@ -60,12 +69,19 @@ E..<......l............5.(.|c............www.reddit.com.....
 E.....@.@............5.....%c............www.reddit.com.............. ...reddit.map.fastly.net..,...........e...,...........eA..,...........e...,...........e..
 ```
 
+
+{{< rawhtml >}}
+<br/><br/>
+{{< /rawhtml >}}
+
+
 ---
-# Wireshark / Tshark
+## Wireshark / Tshark
 The console version of Wireshark comes handy to quickly monitor the traffic on port 53. It works the same as the capture and display filters from Wireshark.
-```bash
+```
 -f: capture filter
 -Y: display filter
+
 $ tshark -i enp0s3 -f "udp port 53" -Y "dns.qry.type == 1 and dns.flags.response == 0"
 Capturing on 'enp0s3'
     1 0.000000000  192.168.1.7 → 192.168.1.1  DNS 72 Standard query 0xcb2a A slashdot.org
@@ -80,7 +96,8 @@ Capturing on 'enp0s3'
    67 10.479990482  192.168.1.7 → 192.168.1.1  DNS 74 Standard query 0x7b3d A www.google.com
 ```
 
-The '`dns.qry.type == A`' will throws '`tshark: "A" cannot be found among the possible values for dns.qry.type.`'. The decimal value for a type 'A' DNS query type is 1.
+The '`dns.qry.type == A`' will throws '`tshark: "A" cannot be found among the possible values for dns.qry.type.`'. The decimal value for a type 'A' DNS query type is 1 [1].
 
-Type ID in decimal - [https://en.wikipedia.org/wiki/List_of_DNS_record_types](https://en.wikipedia.org/wiki/List_of_DNS_record_types)
-
+---
+**References:**
+1. DNS Type ID in decimal - [https://en.wikipedia.org/wiki/List_of_DNS_record_types](https://en.wikipedia.org/wiki/List_of_DNS_record_types)
