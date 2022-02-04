@@ -1,9 +1,9 @@
 .header {
-  font-family: "Raleway", Helvetica, Arial, sans-serif
+  font-family: Play, sans-serif;
 }
 
 a {
-  color: #3b8bba;
+  color: #bbe1fa;
   text-decoration: none;
 }
 a:hover,
@@ -11,7 +11,7 @@ a:focus {
   text-decoration: underline;
 }
 a:visited {
-  color: #265778;
+  color: #bbe1fa;
 }
 
 .small-print {
@@ -47,8 +47,15 @@ article > footer {
   overflow: hidden;
 }
 
+#menu {
+  overflow-y: auto;
+}
+
+#menu a {
+  padding: 0.6em;
+}
+
 #menu .brand {
-  font-family: Raleway;
   font-weight: bold;
   font-size: 1em;
   letter-spacing: 0.1em;
@@ -62,6 +69,10 @@ article > footer {
   font-size: 0.9em;
 }
 
+#menu .pure-menu ul.pure-menu-children {
+  border-top: none;
+}
+
 i {
   display: inline-block;
   margin-right: 0.2em;
@@ -73,5 +84,5 @@ i {
 }
 
 .pagination a {
-  color: #265778;
+  color: #bbe1fa;
 }

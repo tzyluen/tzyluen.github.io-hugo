@@ -1,0 +1,20 @@
+{{ $fields := (index .Params 0) }}
+{{ $data := after 1 .Params }}
+
+<table class="compact-table">
+  <thead><tr class="compact-table">
+    {{ range split $fields "|"}}
+      <th class="compact-table">{{ . }}</th>
+    {{ end }}
+  </thead></tr>
+  <tbody class="compact-table">
+  {{ range $data}}
+    <tr class="compact-table">
+      {{ $items := split . "|" }}
+      {{ range $items }}
+        <td class="compact-table">{{ . }}</td>
+      {{ end }}
+    </tr>
+  {{ end }}
+  </tbody>
+</table>

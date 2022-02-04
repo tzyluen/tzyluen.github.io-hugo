@@ -1,0 +1,32 @@
+{{ $author := (index .Params 0) }}
+{{ $glow := (index .Params 1) }}
+{{ $quotes := after 2 .Params }}
+
+<blockquote class="pull-quote">
+  <table role="presentation" style="border-spacing: 0;">
+    <tbody><tr>
+      <td style="vertical-align: top; margin: 0; padding: 0;">
+        <span class="pull-quote__qmarks">“</span>
+      </td>
+      <td style="width: 100%;">
+        <div class="pull-quote__box">
+      {{ range $quotes }}
+          {{ $lines := split . "|" }} 
+          {{ range $lines }}
+          <p class="pull-quote__text">{{ . }}</p>
+          {{ end }}
+      {{ end }}
+          <span class="pull-quote__qmarks" style="padding-left:2px;vertical-align:top">”</span>
+        </div>
+      </td></tr>
+    <tr>
+      <td colspan="2" style="line-height: 1;">―&nbsp;
+        {{ if eq $glow "glow" }}
+        <cite class="pull-quote__source_glow">{{ $author }}</cite>
+        {{ else }}
+        <cite class="pull-quote__source">{{ $author }}</cite>
+        {{ end }}
+      </td>
+    </tr></tbody>
+  </table>
+</blockquote>

@@ -5,8 +5,13 @@
 </div>
 
 <div class="content">
-  {{ range .Data.Pages }}
-    {{ .Render "summary"}}
+  {{ range .Data.Pages.GroupByDate "2006" }}
+  <h3>{{ .Key }}</h3>
+  <ul>
+  {{ range .Pages }}
+    {{ .Render "li" }}
+  {{ end }}
+  </ul>
   {{ end }}
 </div>
 
