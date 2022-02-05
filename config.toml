@@ -52,6 +52,11 @@ googleAnalytics = "UA-99983797-1"
     pre = "<i class='fa fa-list fa-fw'></i>"
     weight = 4
     url = "/links/"
+  [[menu.main]]
+    name = "Literature"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 5
+    url = "/write-clean-and-fast-code/"
 
 [markup]
   defaultMarkdownHandler = 'goldmark'
